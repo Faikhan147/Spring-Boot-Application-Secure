@@ -66,10 +66,10 @@ pipeline {
                           --subscription "$AZ_SUBSCRIPTION"
 
                         az aks get-credentials \
-                          --resource-group my-rg \
-                          --name myaks
+                          --resource-group faisal \
+                          --name javacluster
 
-                        kubectl apply -f deployment.yaml
+                        kubectl create deployment spring-boot-app --image=${IMAGE_NAME}:${TAG}
                     '''
                 }
             }
