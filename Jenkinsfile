@@ -47,7 +47,7 @@ pipeline {
         stage('AKS Deployment') {
             steps {
                 withCredentials([
-                    azureServicePrinciple(
+                    azureServicePrincipal(
                         credentialsId:  'azure-sp',
                         clientIdVariable: 'AZ_CLIENT_ID',
                         clientSecretVariable: 'AZ_CLIENT_SECRET',
@@ -56,7 +56,7 @@ pipeline {
                     )
                 ])
                     sh '''
-                    az login --service-principle -u "$AZ_CLIENT_ID" -p "$AZ_CLIENT_SECRET" --tenant "$AZ_TENANT_ID"
+                    az login --service-principal -u "$AZ_CLIENT_ID" -p "$AZ_CLIENT_SECRET" --tenant "$AZ_TENANT_ID"
                     az account set --subscription "$AZ_SUBSCRIPTION_ID"
                     az aks get-credentials --resource-group faisal --name javacluster --overwrite-existing
                     kubectl create deployment spring-boot-app --image=${IMAGE_NAME}:${TAG}
