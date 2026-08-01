@@ -44,14 +44,32 @@ pipeline {
             }
         }
 
-        stage('AKS Deployment') {
+        stage('Deploy to AKS') {
             steps {
-                withAzureCLI(credentialsId: 'azure-sp') {
+                withCredentials([
+                    azureServicePrincipal(
+                        credentialsId: 'azure-sp',
+                        clientIdVariable: 'AZ_CLIENT_ID',
+                        clientSecretVariable: 'AZ_CLIENT_SECRET',
+                        tenantIdVariable: 'AZ_TENANT_ID',
+                        subscriptionIdVariable: 'AZ_SUBSCRIPTION'
+                    )
+                ]) {
                     sh '''
-                    az account show
-                    az aks get-credentials --resource-group faisal --name javacluster --overwrite-existing
-                    kubectl create deployment spring-boot-app --image=${IMAGE_NAME}:${TAG}
-                    kubectl expose deployment spring-boot-app --port=80 --target-port=8080 --type=LoadBalancer
+                        az login \
+                          --service-principal \
+                          --username "$AZ_CLIENT_ID" \
+                          --password "$AZ_CLIENT_SECRET" \
+                          --tenant "$AZ_TENANT_ID"
+
+                        az account set \
+                          --subscription "$AZ_SUBSCRIPTION"
+
+                        az aks get-credentials \
+                          --resource-group my-rg \
+                          --name myaks
+
+                        kubectl apply -f deployment.yaml
                     '''
                 }
             }
