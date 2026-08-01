@@ -46,7 +46,7 @@ pipeline {
 
         stage('AKS Deployment') {
             steps {
-                withCredentials({
+                withCredentials([
                     azureServicePrinciple(
                         credentialsId:  'azure-sp',
                         clientIdVariable: 'AZ_CLIENT_ID',
@@ -54,7 +54,7 @@ pipeline {
                         tenantIdVariable: 'AZ_TENANT_ID',
                         subscriptionIdVariable: 'AZ_SUBSCRIPTION_ID'
                     )
-                })
+                ])
                     sh '''
                     az login --service-principle -u "$AZ_CLIENT_ID" -p "$AZ_CLIENT_SECRET" --tenant "$AZ_TENANT_ID"
                     az account set --subscription "$AZ_SUBSCRIPTION_ID"
