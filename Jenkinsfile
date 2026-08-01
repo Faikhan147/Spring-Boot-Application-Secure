@@ -54,7 +54,7 @@ pipeline {
                         tenantIdVariable: 'AZ_TENANT_ID',
                         subscriptionIdVariable: 'AZ_SUBSCRIPTION_ID'
                     )
-                ])
+                ]) {
                     sh '''
                     az login --service-principal -u "$AZ_CLIENT_ID" -p "$AZ_CLIENT_SECRET" --tenant "$AZ_TENANT_ID"
                     az account set --subscription "$AZ_SUBSCRIPTION_ID"
@@ -62,6 +62,7 @@ pipeline {
                     kubectl create deployment spring-boot-app --image=${IMAGE_NAME}:${TAG}
                     kubectl expose deployment spring-boot-app --port=80 --target-port=8080 --type=LoadBalancer
                     '''
+                }
             }
         }
 
