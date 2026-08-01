@@ -59,8 +59,7 @@ pipeline {
                     az login --service-principal -u "$AZ_CLIENT_ID" -p "$AZ_CLIENT_SECRET" --tenant "$AZ_TENANT_ID"
                     az account set --subscription "$AZ_SUBSCRIPTION_ID"
                     az aks get-credentials --resource-group faisal --name javacluster --overwrite-existing
-                    kubectl create deployment spring-boot-app --image=${IMAGE_NAME}:${TAG}
-                    kubectl expose deployment spring-boot-app --port=80 --target-port=8080 --type=LoadBalancer
+                    kubectl set image deployment/spring-boot-app --spring-boot-app=${IMAGE_NAME}:${TAG}
                     '''
                 }
             }
@@ -71,7 +70,7 @@ pipeline {
                 sh '''
                 echo "Checking Application Health Check"
                 sleep 15
-                curl --fail http://myapp || exit 1
+                curl --fail http://20.217.135.79/ || exit 1
                 echo "Application is Alive Now"
                 '''
             }
