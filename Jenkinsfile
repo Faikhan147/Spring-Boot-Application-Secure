@@ -59,7 +59,7 @@ pipeline {
                     az login --service-principal -u "$AZ_CLIENT_ID" -p "$AZ_CLIENT_SECRET" --tenant "$AZ_TENANT_ID"
                     az account set --subscription "$AZ_SUBSCRIPTION_ID"
                     az aks get-credentials --resource-group faisal --name javacluster --overwrite-existing
-                    kubectl set image deployment/spring-boot-app --spring-boot-app=${IMAGE_NAME}:${TAG}
+                    kubectl set image deployment/spring-boot-app spring-boot-app=${IMAGE_NAME}:${TAG}
                     '''
                 }
             }
