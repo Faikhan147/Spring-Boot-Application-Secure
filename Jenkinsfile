@@ -48,10 +48,10 @@ pipeline {
             steps {
                 withCredentials({
                     azureServicePrinciple(
-                        credentialsId:  'azure-sp'
-                        clientIdVariable: 'AZ_CLIENT_ID'
-                        clientSecretVariable: 'AZ_CLIENT_SECRET'
-                        tenantIdVariable: 'AZ_TENANT_ID'
+                        credentialsId:  'azure-sp',
+                        clientIdVariable: 'AZ_CLIENT_ID',
+                        clientSecretVariable: 'AZ_CLIENT_SECRET',
+                        tenantIdVariable: 'AZ_TENANT_ID',
                         subscriptionIdVariable: 'AZ_SUBSCRIPTION_ID'
                     )
                 })
